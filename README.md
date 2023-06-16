@@ -5,7 +5,7 @@ This project describes how to create a small car hire management system, where u
 ## The ERD
 
 The following image describes the ERD, for the full ERD visit this [link](https://dbdiagram.io/d/648c48f302bd1c4a5e999b44)
-![the erd of the system](<Screenshot 2023-06-17 000520-1.png>)
+![the erd of the system](./erd.png)
 
 - Available tables:
   - Users table (customers and employes).
