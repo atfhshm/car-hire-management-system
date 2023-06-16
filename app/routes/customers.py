@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from psycopg import Connection
-from app import oauth
 
 from app.db import get_db
 from app.schemas.customer_schemas import CustomerSchema, CustomerOut
@@ -48,6 +47,6 @@ def delete_customer(id: int, db: Connection = Depends(get_db)) -> None:
         if not customer or (customer.get("type") == "EMPLOYEE"):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         db.commit()
-    return JSONResponse(
+    return Response(
         status_code=status.HTTP_204_NO_CONTENT,
     )
