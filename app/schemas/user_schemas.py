@@ -21,6 +21,12 @@ class Token(BaseModel):
     toke_type: str
 
 
+class UserToken(BaseModel):
+    id: int
+    username: str
+    token: Token
+
+
 class UserOut(BaseModel):
     id: int
     username: str
