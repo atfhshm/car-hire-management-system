@@ -1,12 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.db import get_db
+from fastapi.security import OAuth2PasswordRequestForm
 from psycopg import Connection
 
 from app.schemas.user_schemas import BaseUser
 from app.schemas.user_schemas import UserOut
 
 from app import utils
+from app import oauth
+from app.db import get_db
 from app.schemas.auth_schemas import RegisterCustomerSchema
+from app.schemas.user_schemas import Token
+
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -59,11 +63,6 @@ def register_employee(user: RegisterCustomerSchema, db: Connection = Depends(get
         new_user = cur.fetchone()
         db.commit()
     return new_user
-
-
-from fastapi.security import OAuth2PasswordRequestForm
-from app.schemas.user_schemas import Token
-from app import oauth
 
 
 @router.post("/signin", response_model=UserOut)

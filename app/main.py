@@ -5,12 +5,12 @@ from fastapi.openapi.docs import get_swagger_ui_html
 
 from dataclasses import dataclass
 
-from .routes import auth
-
+from .routes import auth, customers
 
 app = FastAPI()
 
 app.include_router(auth.router)
+app.include_router(customers.router)
 
 
 # app.mount("/static", StaticFiles(directory="./static"), name="static")
