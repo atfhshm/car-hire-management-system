@@ -16,11 +16,6 @@ class BaseUser(BaseModel):
     type: str
 
 
-class UserIn(BaseModel):
-    username: str = Field(..., min_length=3, max_length=32)
-    password: str = Field(..., min_length=6, max_length=64)
-
-
 class Token(BaseModel):
     access_token: str
     toke_type: str
@@ -33,7 +28,7 @@ class UserOut(BaseModel):
     first_name: str
     last_name: str
     type: str
-    # token: Token
+    token: Token
 
 
 class TokenData(BaseModel):

@@ -7,18 +7,16 @@ from datetime import datetime, timedelta
 
 
 from app.db import get_db
-
-from .settings import Settings
-
-settings = Settings()
+from app.schemas.user_schemas import TokenData
+from .settings import settings
 
 
-SECRET_KEY = settings.secret_key
-ALGORITHM = settings.algorithm
-ACCESS_TOKEN_EXPIRY_MINUTES = timedelta(minutes=settings.access_token_expire_minutes)
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRY_MINUTES = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
 
-oath2_schema = OAuth2PasswordBearer(tokenUrl="auth/login")
+oath2_schema = OAuth2PasswordBearer(tokenUrl="login")
 
 
 def create_access_token(
@@ -39,14 +37,14 @@ def verify_access_token(token: str, credential_exception: Exception):
     try:
         payload = jwt.decode(token=token, key=SECRET_KEY, algorithms=[ALGORITHM])
         id: int = payload.get("id")
-        email: str = payload.get("email")
+        username: str = payload.get("username")
 
-        if not (id and email):
+        if not (id and username):
             raise credential_exception
     except JWTError:
         raise credential_exception
 
-    return schema.TokenData(**payload)
+    return TokenData(**payload)
 
 
 def get_current_user(
@@ -58,5 +56,7 @@ def get_current_user(
     token_data = verify_access_token(
         token=token, credential_exception=credential_exception
     )
-    user = db.query(models.User).filter(models.User.id == token_data.id).first()
+    with db.cursor() as cur:
+        cur.execute("SELECT * FROM users WHERE id = %s", (token_data.id))
+        user = cur.fetchone()
     return user
