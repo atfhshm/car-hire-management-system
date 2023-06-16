@@ -5,38 +5,27 @@ from fastapi.openapi.docs import get_swagger_ui_html
 
 from dataclasses import dataclass
 
-import psycopg
+from .routes import auth
 
 
 app = FastAPI()
 
-try:
-    connection = psycopg.connect(
-        dbname="car-hire-management-system",
-        host="127.0.0.1",
-        port=5432,
-        user="postgres",
-        password="123456789",
-    )
-    cursor = connection.cursor()
-    print("connection established")
-except Exception as error:
-    print(error)
+app.include_router(auth.router)
 
 
-app.mount("/static", StaticFiles(directory="./static"), name="static")
+# app.mount("/static", StaticFiles(directory="./static"), name="static")
 
 
-def swagger_monkey_patch(*args, **kwargs):
-    return get_swagger_ui_html(
-        *args,
-        **kwargs,
-        swagger_js_url="/static/swagger-ui/swagger-ui-bundle.js",
-        swagger_css_url="/static/swagger-ui/swagger-ui.css",
-    )
+# def swagger_monkey_patch(*args, **kwargs):
+#     return get_swagger_ui_html(
+#         *args,
+#         **kwargs,
+#         swagger_js_url="/static/swagger-ui/swagger-ui-bundle.js",
+#         swagger_css_url="/static/swagger-ui/swagger-ui.css",
+#     )
 
 
-applications.get_swagger_ui_html = swagger_monkey_patch
+# applications.get_swagger_ui_html = swagger_monkey_patch
 
 
 @dataclass

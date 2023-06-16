@@ -1,22 +1,28 @@
 import os
 from dotenv import load_dotenv
-
+from pydantic import BaseSettings
 from pathlib import Path
+
+__all__ = ["settings"]
 
 env_path = Path(".") / ".env"
 load_dotenv(dotenv_path=env_path)
 
 
-class Settings:
+class Settings(BaseSettings):
     # database settings
-    POSTGRES_USER: str = os.getenv("POSTGRES_USER")
-    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
-    POSTGRES_PORT: str = os.getenv(
-        "POSTGRES_PORT", 5432
-    )  # default postgres port is 5432
-    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "tdd")
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_SERVER: str
+    POSTGRES_PORT: str
+    POSTGRES_DB: str = "car-hire-management-system"
     DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    class Config:
+        env_file = "./.env"
 
 
 settings = Settings()
