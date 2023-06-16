@@ -5,7 +5,24 @@ from fastapi.openapi.docs import get_swagger_ui_html
 
 from dataclasses import dataclass
 
+import psycopg
+
+
 app = FastAPI()
+
+try:
+    connection = psycopg.connect(
+        dbname="car-hire-management-system",
+        host="127.0.0.1",
+        port=5432,
+        user="postgres",
+        password="123456789",
+    )
+    cursor = connection.cursor()
+    print("connection established")
+except Exception as error:
+    print(error)
+
 
 app.mount("/static", StaticFiles(directory="./static"), name="static")
 
