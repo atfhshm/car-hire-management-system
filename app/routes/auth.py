@@ -9,7 +9,7 @@ from app import utils
 from app import oauth
 from app.db import get_db
 from app.schemas.auth_schemas import RegisterCustomerSchema
-from app.schemas.user_schemas import Token
+from app.schemas.user_schemas import Token, UserToken
 
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -89,5 +89,5 @@ def signin(
         )
     return {
         **db_user,
-        "token": Token(access_token=access_token, toke_type="bearer"),
+        "token": Token(access_token=access_token, token_type="bearer"),
     }

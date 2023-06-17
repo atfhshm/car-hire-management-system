@@ -25,3 +25,13 @@ class BookingSchema(BaseModel):
     hire_date: datetime
     return_date: datetime
     created_at: datetime
+
+
+class BookingInSchema(BaseModel):
+    hire_date: datetime
+    return_date: datetime
+
+
+class BookingOutSchema(BookingInSchema):
+    id: int
+    created_at: datetime

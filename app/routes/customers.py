@@ -3,6 +3,7 @@ from fastapi.responses import Response
 from psycopg import Connection
 
 from app.db import get_db
+from app import oauth
 from app.schemas.customer_schemas import CustomerSchema, CustomerOut
 
 
@@ -10,7 +11,9 @@ router = APIRouter(prefix="/customers", tags=["customers"])
 
 
 @router.get("/{id}", response_model=CustomerOut)
-def get_customer(id: int, db: Connection = Depends(get_db)):
+def get_customer(
+    id: int, db: Connection = Depends(get_db), auth_user=Depends(oauth.get_current_user)
+):
     with db.cursor() as cur:
         cur.execute("SELECT * FROM users WHERE id = %s", (id,))
         customer = cur.fetchone()
@@ -20,7 +23,12 @@ def get_customer(id: int, db: Connection = Depends(get_db)):
 
 
 @router.put("/{id}", response_model=CustomerOut)
-def update_customer(id: int, user: CustomerSchema, db: Connection = Depends(get_db)):
+def update_customer(
+    id: int,
+    user: CustomerSchema,
+    db: Connection = Depends(get_db),
+    auth_user=Depends(oauth.get_current_user),
+):
     with db.cursor() as cur:
         cur.execute(
             """UPDATE users SET username = %s, 
@@ -40,7 +48,9 @@ def update_customer(id: int, user: CustomerSchema, db: Connection = Depends(get_
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_customer(id: int, db: Connection = Depends(get_db)) -> None:
+def delete_customer(
+    id: int, db: Connection = Depends(get_db), auth_user=Depends(oauth.get_current_user)
+) -> None:
     with db.cursor() as cur:
         cur.execute("DELETE FROM users WHERE id = %s RETURNING *", (id,))
         customer = cur.fetchone()

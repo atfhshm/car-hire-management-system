@@ -18,7 +18,7 @@ class BaseUser(BaseModel):
 
 class Token(BaseModel):
     access_token: str
-    toke_type: str
+    token_type: str
 
 
 class UserToken(BaseModel):
@@ -39,4 +39,4 @@ class UserOut(BaseModel):
 
 class TokenData(BaseModel):
     id: int
-    email: EmailStr
+    username: str

@@ -57,6 +57,6 @@ def get_current_user(
         token=token, credential_exception=credential_exception
     )
     with db.cursor() as cur:
-        cur.execute("SELECT * FROM users WHERE id = %s", (token_data.id))
+        cur.execute("SELECT * FROM users WHERE id = %s", (token_data.id,))
         user = cur.fetchone()
     return user
