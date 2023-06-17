@@ -1,4 +1,4 @@
-CREATE TABLE public.bookings
+CREATE TABLE IF NOT EXISTS bookings
 (
     id serial NOT NULL,
     car integer NOT NULL,
@@ -8,16 +8,13 @@ CREATE TABLE public.bookings
     created_at timestamp with time zone DEFAULT Now(),
     PRIMARY KEY (id),
     CONSTRAINT booking_car_fk FOREIGN KEY (car)
-        REFERENCES public.cars (id) MATCH SIMPLE
+        REFERENCES cars (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
         NOT VALID,
     CONSTRAINT booking_user_fk FOREIGN KEY ("auth_user")
-        REFERENCES public.users (id) MATCH SIMPLE
+        REFERENCES users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
         NOT VALID
 );
-
-ALTER TABLE IF EXISTS public.bookings
-    OWNER to postgres;

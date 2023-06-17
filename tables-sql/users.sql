@@ -1,4 +1,4 @@
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id serial NOT NULL,
     username character varying(32) NOT NULL,
@@ -11,6 +11,3 @@ CREATE TABLE users
     password character varying(128) NOT NULL,
     PRIMARY KEY (id)
 );
-
-ALTER TABLE IF EXISTS users
-    OWNER to postgres;

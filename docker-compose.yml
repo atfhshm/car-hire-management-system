@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  api:
+    container_name: 'fastapi-car-hire-sys'
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456789
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=car-hire-management-system
+      - SECRET_KEY=56218f77383538dfbdcc641b2bde8a918a088dea19b63cd5498ec5dd7b06c6d325ad02bdc8b1c999
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=60
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=car-hire-management-system
+      - POSTGRES_PASSWORD=123456789
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+volumes:
+  postgres_db:
