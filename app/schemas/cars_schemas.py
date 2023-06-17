@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CarType(str, Enum):
@@ -35,3 +35,7 @@ class BookingInSchema(BaseModel):
 class BookingOutSchema(BookingInSchema):
     id: int
     created_at: datetime
+
+
+class BookingPaymentIn(BaseModel):
+    amount: int = Field(..., gt=1)

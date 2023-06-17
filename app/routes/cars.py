@@ -1,16 +1,10 @@
 import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import Response
 from psycopg import Connection
 
 from app.db import get_db
 from app import oauth
-from app.schemas.cars_schemas import (
-    BookingInSchema,
-    BookingOutSchema,
-    CarSchema,
-    BookingSchema,
-)
+from app.schemas.cars_schemas import BookingInSchema, CarSchema, BookingPaymentIn
 
 import pytz
 
@@ -46,8 +40,8 @@ def book_car(
     with db.cursor() as cur:
         cur.execute(
             """
-                    select count(*) as user_booking_count from bookings where auth_user=%s;
-                    """,
+                select count(*) as user_booking_count from bookings where auth_user=%s;
+            """,
             (auth_user.get("id"),),
         )
         count = cur.fetchone().get("user_booking_count")
@@ -66,9 +60,25 @@ def book_car(
     return db_booking
 
 
-@router.post("/payment")
-def add_car_payment():
-    ...
+@router.post("/book/{booking_id}/payment")
+def add_car_booking_payment(
+    payment: BookingPaymentIn,
+    booking_id: int,
+    db: Connection = Depends(get_db),
+    auth_user=Depends(oauth.get_current_user),
+):
+    with db.cursor() as cur:
+        cur.execute(
+            """
+                INSERT INTO payments (booking, amount)
+                VALUES (%s, %s) RETURNING *;
+            """,
+            (booking_id, payment.amount),
+        )
+        db_payment = cur.fetchone()
+        print(db_payment)
+    db.commit()
+    return db_payment
 
 
 @router.get("/booking")
