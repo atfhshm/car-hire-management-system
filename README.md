@@ -13,3 +13,19 @@ The following image describes the ERD, for the full ERD visit this [link](https:
   - cars table.
   - Bookings table (all the booked cars and their schedule).
   - payments table (payment for each car booking)
+
+## Run locally
+
+- create an environment, Then activate it
+- Install the requirements from the `requirements.txt` file using pip
+- Run the uvicorn server using the following command.
+  ```sh
+  uvicorn app.main:app --reload
+  ```
+
+## Run using docker-compose
+
+- Run the following command in deattached mode using `docker-compose`
+  ```sh
+  docker-compose up -t --build
+  ```
