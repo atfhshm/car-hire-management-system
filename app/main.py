@@ -122,7 +122,7 @@ def create_payments():
                 (
                     id serial NOT NULL,
                     booking integer NOT NULL,
-                    amout integer NOT NULL,
+                    amount integer NOT NULL,
                     PRIMARY KEY (id),
                     CONSTRAINT payment_booking_fk FOREIGN KEY (booking)
                         REFERENCES bookings (id) MATCH SIMPLE

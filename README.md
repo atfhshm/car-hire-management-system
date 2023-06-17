@@ -29,3 +29,10 @@ The following image describes the ERD, for the full ERD visit this [link](https:
   ```sh
   docker-compose up -t --build
   ```
+
+## Usage Instructions
+
+- Make sure to log in and authenticate the user.
+- Make sure to configure the following environment variables in postman:
+  - `url` : `http://127.0.0.1:8000`
+  - `JWT` : Is set automatically when the user first signin.
