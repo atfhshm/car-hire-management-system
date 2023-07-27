@@ -19,6 +19,7 @@ The following image describes the ERD, for the full ERD visit this [link](https:
 - create an environment, Then activate it
 - Install the requirements from the `requirements.txt` file using pip
 - Run the uvicorn server using the following command.
+
   ```sh
   uvicorn app.main:app --reload
   ```
@@ -26,6 +27,7 @@ The following image describes the ERD, for the full ERD visit this [link](https:
 ## Run using docker-compose
 
 - Run the following command in deattached mode using `docker-compose`
+
   ```sh
   docker-compose up -t --build
   ```
